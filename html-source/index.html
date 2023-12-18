@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      .my-footer {
+        height: 5em;
+        background-color: #163b65;
+        margin-top: 1.5em;
+        padding: 1em;
+        color: white;
+        font-size: 80%;
+      }
+    </style>
+    <title>Bookings</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Room's
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="generals.html"
+                    >General's Super Premium</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="majors.html">Major's Suite</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="reservation.html">Book Now</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="main-carousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#main-carousel"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Woman and laptop"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#main-carousel"
+          data-bs-slide-to="1"
+          aria-label="Tray and coofee"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#main-carousel"
+          data-bs-slide-to="2"
+          aria-label="Outside house"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            src="static/images/woman-laptop.png"
+            class="d-block w-100"
+            alt="Woman and laptop"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Woman and laptop</h5>
+            <p>Work or have fun in our place with best military experince</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            src="static/images/tray.png"
+            class="d-block w-100"
+            alt="Tray and coofee"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Tray and coofee</h5>
+            <p>The best service room's to improve best experince to you</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            src="static/images/outside.png"
+            class="d-block w-100"
+            alt="Outside house"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Places</h5>
+            <p>We have the best places around the country to offer you</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-4">
+      <div class="row">
+        <h1 class="text-center">Sua experiência é nossa missão</h1>
+        <p>
+          Somos a Military Experience, uma empresa dedicada a proporcionar
+          experiências únicas de hospedagem com um toque militar. Fundada com o
+          objetivo de oferecer o melhor atendimento e acomodações excepcionais,
+          nossa paixão pelo serviço ao cliente e compromisso com a excelência
+          são os pilares que sustentam nossa missão. Nossa equipe é composta por
+          especialistas em hospitalidade que entendem a importância de tornar
+          cada estadia memorável. Ao escolher a Military Experience, você está
+          escolhendo mais do que uma acomodação; está optando por uma
+          experiência única e dedicada a superar suas expectativas.
+        </p>
+      </div>
+    </div>
+    <footer class="my-footer">
+      <div class="row">
+        <div class="col">left</div>
+
+        <div class="col">center</div>
+
+        <div class="col">right</div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
