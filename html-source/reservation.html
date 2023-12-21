@@ -16,6 +16,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/notie/dist/notie.min.css"
+    />
     <style>
       .my-footer {
         height: 5em;
@@ -25,8 +30,8 @@
         color: white;
         font-size: 80%;
       }
-      .redText {
-        color: red;
+      .notie-container {
+        box-shadow: none;
       }
     </style>
     <title>Bookings</title>
@@ -132,6 +137,11 @@
               Search Availability
             </button>
           </form>
+          <div class="row mt-3">
+            <button id="notifyButton" type="submit" class="btn btn-secondary">
+              notify
+            </button>
+          </div>
         </div>
         <div class="col-md-3"></div>
       </div>
@@ -154,6 +164,7 @@
     ></script>
     <!-- DatePicker JS -->
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
     <script>
       console.log("I am printing from javascript");
       (function () {
@@ -182,10 +193,23 @@
         );
       })();
 
+      document
+        .getElementById("notifyButton")
+        .addEventListener("click", function () {
+          notify("This is my message", "info");
+        });
+
       const elem = document.getElementById("reservation-dates");
       const rangepicker = new DateRangePicker(elem, {
         format: "dd/mm/yyyy",
       });
+
+      function notify(msg, msgType) {
+        notie.alert({
+          type: msgType,
+          text: msg,
+        });
+      }
     </script>
   </body>
 </html>
