@@ -165,6 +165,7 @@
     <!-- DatePicker JS -->
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       console.log("I am printing from javascript");
       (function () {
@@ -196,7 +197,7 @@
       document
         .getElementById("notifyButton")
         .addEventListener("click", function () {
-          notify("This is my message", "info");
+          notifyModal("title", "Hello World", "success", "My Text");
         });
 
       const elem = document.getElementById("reservation-dates");
@@ -208,6 +209,14 @@
         notie.alert({
           type: msgType,
           text: msg,
+        });
+      }
+      function notifyModal(title, text, icon, confirmationButtonText) {
+        Swal.fire({
+          title: title,
+          html: text,
+          icon: icon,
+          confirmButtonText: confirmationButtonText,
         });
       }
     </script>
