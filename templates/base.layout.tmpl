@@ -14,32 +14,8 @@
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/css/datepicker-bs4.min.css">
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.15/bootstrap-4.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
-
-        <style>
-            .btn-outline-secondary {
-                color: aqua;
-                border-color: #6c757d;
-            }
-
-            p {
-
-            }
-
-            .paraClass {
-                font-size: 3em;
-            }
-
-            .secondClass {
-                color: red;
-            }
-
-            #lastPara {
-                text-decoration: underline;
-            }
-        </style>
-
     </head>
 
     <body>
@@ -84,7 +60,8 @@
     {{end}}
 
 
-    <footer class="my-footer">
+    <footer class="container-fluid my-footer">
+        
         <div class="row">
             <div class="col">
                 left
@@ -97,6 +74,7 @@
             <div class="col">
                 right
             </div>
+           
         </div>
     </footer>
 
@@ -108,8 +86,7 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
     {{block "js" .}}
 
