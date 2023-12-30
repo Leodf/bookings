@@ -9,9 +9,8 @@ import (
 
 	"github.com.br/Leodf/bookings/pkg/config"
 	"github.com.br/Leodf/bookings/pkg/model"
+	"github.com/justinas/nosurf"
 )
-
-var functions = template.FuncMap{}
 
 var app *config.AppConfig
 
@@ -19,11 +18,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *model.TemplateData) *model.TemplateData {
+func AddDefaultData(td *model.TemplateData, r *http.Request) *model.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
-func Template(w http.ResponseWriter, tmpl string, td *model.TemplateData) {
+func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *model.TemplateData) {
 	var tc map[string]*template.Template
 
 	if app.UseCache {
@@ -41,7 +41,7 @@ func Template(w http.ResponseWriter, tmpl string, td *model.TemplateData) {
 
 	buf := new(bytes.Buffer)
 
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 
 	_ = t.Execute(buf, td)
 

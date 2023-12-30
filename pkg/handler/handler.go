@@ -33,7 +33,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	remoteIp := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIp)
 
-	render.Template(w, "home.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "home.page.tmpl", &model.TemplateData{})
 }
 
 // About is the about page handler
@@ -45,32 +45,37 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	remoteIp := m.App.Session.GetString(r.Context(), "remote_ip")
 	stringMap["remote_ip"] = remoteIp
 
-	render.Template(w, "about.page.tmpl", &model.TemplateData{
+	render.Template(w, r, "about.page.tmpl", &model.TemplateData{
 		StringMap: stringMap,
 	})
 }
 
 // Reservation is the make reservation page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, "make-reservation.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "make-reservation.page.tmpl", &model.TemplateData{})
 }
 
 // Generals is the generals quarters page handler
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, "generals.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "generals.page.tmpl", &model.TemplateData{})
 }
 
 // Majors is the majors suite page handler
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, "majors.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "majors.page.tmpl", &model.TemplateData{})
 }
 
-// Majors is the majors suite page handler
+// Availability is the availability page handler
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, "search-availability.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "search-availability.page.tmpl", &model.TemplateData{})
+}
+
+// PostAvailability is the post form availability page handler
+func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Post form availability"))
 }
 
 // Contact is the contact page handler
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, "contact.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "contact.page.tmpl", &model.TemplateData{})
 }
