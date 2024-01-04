@@ -8,9 +8,9 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 
-	"github.com.br/Leodf/bookings/pkg/config"
-	"github.com.br/Leodf/bookings/pkg/handler"
-	"github.com.br/Leodf/bookings/pkg/render"
+	"github.com.br/Leodf/bookings/internal/config"
+	"github.com.br/Leodf/bookings/internal/handler"
+	"github.com.br/Leodf/bookings/internal/render"
 )
 
 const portNumber = ":8080"

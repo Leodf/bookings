@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com.br/Leodf/bookings/pkg/config"
-	"github.com.br/Leodf/bookings/pkg/model"
-	"github.com.br/Leodf/bookings/pkg/render"
+	"github.com.br/Leodf/bookings/internal/config"
+	"github.com.br/Leodf/bookings/internal/model"
+	"github.com.br/Leodf/bookings/internal/render"
 )
 
 // Repo the repository used by the handlers
