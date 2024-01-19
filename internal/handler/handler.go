@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com.br/Leodf/bookings/internal/config"
+	"github.com.br/Leodf/bookings/internal/forms"
 	"github.com.br/Leodf/bookings/internal/model"
 	"github.com.br/Leodf/bookings/internal/render"
 )
@@ -55,7 +56,14 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation is the make reservation page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, r, "make-reservation.page.tmpl", &model.TemplateData{})
+	render.Template(w, r, "make-reservation.page.tmpl", &model.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+
+// PostReservation handles the posting of reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // Generals is the generals quarters page handler
