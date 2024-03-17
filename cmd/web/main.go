@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 
 	"github.com.br/Leodf/bookings/internal/config"
 	"github.com.br/Leodf/bookings/internal/handler"
+	"github.com.br/Leodf/bookings/internal/model"
 	"github.com.br/Leodf/bookings/internal/render"
 )
 
@@ -20,9 +22,10 @@ var session *scs.SessionManager
 
 // main is the main application function
 func main() {
+	// what am I going to put in the session
+	gob.Register(model.Reservation{})
 	// change this to true when in production
 	app.InProduction = false
-
 	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -34,6 +37,7 @@ func main() {
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
+		fmt.Println(err.Error())
 		log.Fatal("Cannot create template cache")
 	}
 
