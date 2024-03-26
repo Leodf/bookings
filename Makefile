@@ -32,7 +32,7 @@ help:
 
 .PHONY: test
 test:
-	go test ./... -v -covermode=count
+	go test ./... -covermode=count
 
 # .PHONY: run
 # run:
