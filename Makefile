@@ -9,9 +9,9 @@ help:
 	$(info bookings commands:)
 # $(info -> setup                   installs dependencies)
 # $(info -> format                  formats go files)
-# $(info -> build                   builds executable binary)
+	$(info -> build                   builds executable binary)
 	$(info -> test                    runs available tests)
-# $(info -> run                     runs application)
+	$(info -> run                     runs application)
 	$(info -> coverage                generate test coverage report)
 
 # .PHONY: setup
@@ -24,19 +24,19 @@ help:
 # format:
 # 	go fmt ./...
 
-# .PHONY: build
-# build:
-# 	go build -v -o $(MODULE_NAME).bin ./$(MODULE_NAME)
-# 	chmod +x $(MODULE_NAME).bin
-# 	echo $(MODULE_NAME).bin
+.PHONY: build
+build:
+	go build -v -o bookings cmd/web/*.go
+# chmod +x $(MODULE_NAME).bin
+# echo $(MODULE_NAME).bin
 
 .PHONY: test
 test:
 	go test ./... -covermode=count
 
-# .PHONY: run
-# run:
-# 	go run ./$(MODULE_NAME)
+.PHONY: run
+run:
+	go build -v -o bookings cmd/web/*.go && ./bookings
 
 .PHONY: coverage
 coverage:
