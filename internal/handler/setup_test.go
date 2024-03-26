@@ -6,10 +6,12 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/config"
+	"github.com.br/Leodf/bookings/internal/helpers"
 	"github.com.br/Leodf/bookings/internal/model"
 	"github.com.br/Leodf/bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
@@ -28,6 +30,13 @@ func getRoutes() http.Handler {
 	gob.Register(model.Reservation{})
 	// change this to true when in production
 	app.InProduction = false
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
+
 	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -47,8 +56,8 @@ func getRoutes() http.Handler {
 
 	repo := NewRepo(&app)
 	NewHandlers(repo)
-
 	render.NewTemplates(&app)
+	helpers.NewHelpers(&app)
 
 	mux := chi.NewRouter()
 
