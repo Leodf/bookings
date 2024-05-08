@@ -1,3 +1,4 @@
+include .env
 PROJECT_NAME = bookings
 MODULE_NAME = cmd
 
@@ -41,3 +42,23 @@ run:
 .PHONY: coverage
 coverage:
 	go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out -o cover.html
+
+.PHONY: create_migration
+create_migration:
+	goose -dir=$(GOOSE_MIGRATION_DIR) create $(NAME) sql
+
+.PHONY: db_status
+db_status:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING=$(DSN) goose -dir=$(GOOSE_MIGRATION_DIR) status
+
+.PHONY: migrations_up
+migrations_up:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING=$(DSN) goose -dir=$(GOOSE_MIGRATION_DIR) up
+
+.PHONY: migrations_down
+migrations_down:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING=$(DSN) goose -dir=$(GOOSE_MIGRATION_DIR) down
+
+.PHONY: migrations_reset
+migrations_reset:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING=$(DSN) goose -dir=$(GOOSE_MIGRATION_DIR) reset
