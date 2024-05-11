@@ -14,6 +14,11 @@ help:
 	$(info -> test                    runs available tests)
 	$(info -> run                     runs application)
 	$(info -> coverage                generate test coverage report)
+	$(info -> create_migration        generate new migration files, param "NAME=" it's necessary)
+	$(info -> db_status               dump the migration status for the current DB)
+	$(info -> migrations_up           migrate the DB to the most recent version available)
+	$(info -> migrations_down         roll back the version by 1)
+	$(info -> migrations_reset        roll back all migrations)
 
 # .PHONY: setup
 # setup:
