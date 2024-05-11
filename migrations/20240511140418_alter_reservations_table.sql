@@ -1,0 +1,40 @@
+-- +goose Up
+ALTER TABLE reservations
+ALTER COLUMN first_name SET NOT NULL,
+ALTER COLUMN first_name SET DEFAULT '',
+ALTER COLUMN last_name SET NOT NULL,
+ALTER COLUMN last_name SET DEFAULT '',
+ALTER COLUMN email SET NOT NULL,
+ALTER COLUMN phone SET NOT NULL,
+ALTER COLUMN phone SET DEFAULT '',
+ALTER COLUMN start_date SET NOT NULL,
+ALTER COLUMN end_date SET NOT NULL;
+
+ALTER TABLE reservations
+ADD CONSTRAINT reservations_rooms_id_fk
+FOREIGN KEY (room_id) REFERENCES rooms(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS reservations_pkey ON reservations(id int4_ops);
+
+-- +goose Down
+ALTER TABLE reservations
+ALTER COLUMN first_name DROP DEFAULT,
+ALTER COLUMN first_name DROP NOT NULL,
+ALTER COLUMN last_name DROP DEFAULT,
+ALTER COLUMN last_name DROP NOT NULL,
+ALTER COLUMN email DROP NOT NULL,
+ALTER COLUMN phone DROP DEFAULT,
+ALTER COLUMN phone DROP NOT NULL,
+ALTER COLUMN start_date DROP NOT NULL,
+ALTER COLUMN end_date DROP NOT NULL;
+
+ALTER TABLE reservations
+DROP CONSTRAINT reservations_rooms_id_fk;
+
+DROP INDEX IF EXISTS reservations_pkey;
+
+
+
+
