@@ -1,14 +1,16 @@
 -- +goose Up
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS reservations (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(255),
-    password VARCHAR(60),
-    access_level INTEGER DEFAULT 1,
+    phone VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP
+    updated_at TIMESTAMP,
+    room_id INTEGER
 );
 
 -- +goose Down
-DROP TABLE users;
+DROP TABLE reservations;
