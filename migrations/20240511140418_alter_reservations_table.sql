@@ -16,8 +16,6 @@ FOREIGN KEY (room_id) REFERENCES rooms(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
-CREATE UNIQUE INDEX IF NOT EXISTS reservations_pkey ON reservations(id int4_ops);
-
 -- +goose Down
 ALTER TABLE reservations
 ALTER COLUMN first_name DROP DEFAULT,
@@ -32,8 +30,6 @@ ALTER COLUMN end_date DROP NOT NULL;
 
 ALTER TABLE reservations
 DROP CONSTRAINT reservations_rooms_id_fk;
-
-DROP INDEX IF EXISTS reservations_pkey;
 
 
 
