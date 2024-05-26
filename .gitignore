@@ -2,3 +2,4 @@ cover.html
 coverage.out
 .env
 docker
+build

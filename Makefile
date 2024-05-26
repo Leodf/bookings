@@ -32,7 +32,7 @@ help:
 
 .PHONY: build
 build:
-	go build -v -o bookings cmd/web/*.go
+	go build -v -o ./build/bookings cmd/web/*.go
 # chmod +x $(MODULE_NAME).bin
 # echo $(MODULE_NAME).bin
 
@@ -42,7 +42,7 @@ test:
 
 .PHONY: run
 run:
-	go build -v -o bookings cmd/web/*.go && ./bookings
+	go build -v -o ./build/bookings cmd/web/*.go && ./build/bookings
 
 .PHONY: coverage
 coverage:
