@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -51,13 +52,32 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation is the make reservation page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	var emptyReservation model.Reservation
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(model.Reservation)
+	if !ok {
+		helpers.ServerError(w, errors.New("cannot get reservation from session"))
+		return
+	}
+
+	room, err := m.DB.GetRoomByID(res.RoomID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	res.Room.RoomName = room.RoomName
+	sd := res.StartDate.Format("02/01/2006")
+	ed := res.EndDate.Format("02/01/2006")
+
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = sd
+	stringMap["end_date"] = ed
+
 	data := make(map[string]interface{})
-	data["reservation"] = emptyReservation
+	data["reservation"] = res
 
 	render.Template(w, r, "make-reservation.page.tmpl", &model.TemplateData{
-		Form: forms.New(nil),
-		Data: data,
+		Form:      forms.New(nil),
+		Data:      data,
+		StringMap: stringMap,
 	})
 }
 
