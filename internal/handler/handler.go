@@ -261,7 +261,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		resp := jsonResponse{
 			Ok:      false,
-			Message: "Internal Server Error",
+			Message: "Internal server error",
 		}
 		out, _ := json.MarshalIndent(resp, "", "		")
 		w.Header().Set("Content-Type", "application/json")
@@ -269,8 +269,8 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sd := r.Form.Get("start")
-	ed := r.Form.Get("end")
+	sd := r.Form.Get("start_date")
+	ed := r.Form.Get("end_date")
 
 	layout := "02/01/2006"
 	startDate, err := time.Parse(layout, sd)
@@ -294,11 +294,13 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 	available, err := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomID)
 	if err != nil {
+		// got a database error, so return appropriate json
 		resp := jsonResponse{
 			Ok:      false,
-			Message: "Error connecting to database",
+			Message: "Error querying database",
 		}
-		out, _ := json.MarshalIndent(resp, "", "		")
+
+		out, _ := json.MarshalIndent(resp, "", "     ")
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(out)
 		return
