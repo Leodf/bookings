@@ -4,17 +4,16 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/config"
 	"github.com.br/Leodf/bookings/internal/driver"
 	"github.com.br/Leodf/bookings/internal/forms"
-	"github.com.br/Leodf/bookings/internal/helpers"
 	"github.com.br/Leodf/bookings/internal/model"
 	"github.com.br/Leodf/bookings/internal/render"
 	"github.com.br/Leodf/bookings/internal/repository"
 	"github.com.br/Leodf/bookings/internal/repository/dbrepo"
-	"github.com/go-chi/chi/v5"
 )
 
 // Repo the repository used by the handlers
@@ -354,15 +353,28 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 // ChooseRoom displays list of available rooms
 func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
-	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	// used to have next 6 lines
+	//roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	//if err != nil {
+	//	log.Println(err)
+	//	m.App.Session.Put(r.Context(), "error", "missing url parameter")
+	//	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	//	return
+	//}
+	// changed to this, so we can test it more easily
+	// split the URL up by /, and grab the 3rd element
+	exploded := strings.Split(r.RequestURI, "/")
+	roomID, err := strconv.Atoi(exploded[2])
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "missing url parameter")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(model.Reservation)
 	if !ok {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	res.RoomID = roomID
@@ -377,7 +389,8 @@ func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) BookRoom(w http.ResponseWriter, r *http.Request) {
 	roomID, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "invalid ID!")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	sd := r.URL.Query().Get("s")
@@ -386,19 +399,22 @@ func (m *Repository) BookRoom(w http.ResponseWriter, r *http.Request) {
 	layout := "02/01/2006"
 	startDate, err := time.Parse(layout, sd)
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "can't parse start date!")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	endDate, err := time.Parse(layout, ed)
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "can't parse end date!")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	var res model.Reservation
 
 	room, err := m.DB.GetRoomByID(roomID)
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Can't get room from db!")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
