@@ -1,6 +1,7 @@
 package dbrepo
 
 import (
+	"errors"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/model"
@@ -31,6 +32,10 @@ func (r *testDBRepo) SearchAvailabilityForAllRooms(start, end time.Time) ([]mode
 // GetRoomByID get room by ID
 func (r *testDBRepo) GetRoomByID(id int) (model.Room, error) {
 	var room model.Room
+	if id > 2 {
+		return room, errors.New("some error")
+	}
+
 	return room, nil
 
 }
