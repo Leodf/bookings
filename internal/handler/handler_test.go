@@ -7,9 +7,11 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
+	"github.com.br/Leodf/bookings/internal/driver"
 	"github.com.br/Leodf/bookings/internal/model"
 )
 
@@ -45,7 +47,7 @@ func TestHandlers(t *testing.T) {
 	}
 }
 
-func TestRepositoryreservation(t *testing.T) {
+func TestRepositoryReservation(t *testing.T) {
 	reservation := model.Reservation{
 		ID: 1,
 		Room: model.Room{
@@ -252,6 +254,15 @@ func TestRepositoryPostReservation(t *testing.T) {
 
 	if rr.Code != http.StatusTemporaryRedirect {
 		t.Errorf("PostReservation handler failed when trying fail inserting reservation: %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+	}
+}
+
+func TestNewRepo(t *testing.T) {
+	var db driver.DB
+	testRepo := NewRepo(&app, &db)
+
+	if reflect.TypeOf(testRepo).String() != "*handler.Repository" {
+		t.Errorf("Did not get correct type from NewRepo: got %s, wanted *Repository", reflect.TypeOf(testRepo).String())
 	}
 }
 
