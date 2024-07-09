@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/config"
@@ -25,7 +26,7 @@ var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 var functions = template.FuncMap{}
 
-func getRoutes() http.Handler {
+func TestMain(m *testing.M) {
 	// what am I going to put in the session
 	gob.Register(model.Reservation{})
 	// change this to true when in production
@@ -54,13 +55,16 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	repo := NewRepo(&app)
+	repo := NewTestRepo(&app)
 	NewHandlers(repo)
 	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
 
-	mux := chi.NewRouter()
+	os.Exit(m.Run())
+}
 
+func getRoutes() http.Handler {
+	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
 	// mux.Use(NoSurf) its comment to use in test
 	mux.Use(SessionLoad)
