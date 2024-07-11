@@ -106,6 +106,7 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
 
 	req, _ := http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx := getCtx(req)
@@ -144,6 +145,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -164,6 +167,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -184,6 +189,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=invalid")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -204,6 +211,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -224,6 +233,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=2")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -244,6 +255,8 @@ func TestRepository_PostReservation(t *testing.T) {
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "email=john@smith.com")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "phone=123456789")
 	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_id=1000")
+	reqBody = fmt.Sprintf("%s&%s", reqBody, "room_name=General's Quarters")
+
 	req, _ = http.NewRequest("POST", "/make-reservation", strings.NewReader(reqBody))
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
@@ -273,8 +286,8 @@ func TestRepository_PostAvailability(t *testing.T) {
 	*****************************************/
 	// create our request body
 	postedData := url.Values{}
-	postedData.Add("start_date", "01/01/2050")
-	postedData.Add("end_date", "02/01/2050")
+	postedData.Add("start", "01/01/2050")
+	postedData.Add("end", "02/01/2050")
 
 	// create our request
 	req, _ := http.NewRequest("POST", "/search-availability", strings.NewReader(postedData.Encode()))
@@ -306,8 +319,8 @@ func TestRepository_PostAvailability(t *testing.T) {
 	// this time, we specify a start date before 01/01/2040, which will give us
 	// a non-empty slice, indicating that rooms are available
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2040")
-	postedData.Add("end_date", "02/01/2040")
+	postedData.Add("start", "01/01/2040")
+	postedData.Add("end", "02/01/2040")
 
 	// create our request
 	req, _ = http.NewRequest("POST", "/search-availability", strings.NewReader(postedData.Encode()))
@@ -367,8 +380,8 @@ func TestRepository_PostAvailability(t *testing.T) {
 	*****************************************/
 	// this time, we specify a start date in the wrong format
 	postedData = url.Values{}
-	postedData.Add("start_date", "invalid")
-	postedData.Add("end_date", "02/01/2050")
+	postedData.Add("start", "invalid")
+	postedData.Add("end", "02/01/2050")
 	req, _ = http.NewRequest("POST", "/search-availability", strings.NewReader(postedData.Encode()))
 
 	// get the context with session
@@ -398,8 +411,8 @@ func TestRepository_PostAvailability(t *testing.T) {
 	*****************************************/
 	// this time, we specify a start date in the wrong format
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2050")
-	postedData.Add("end_date", "invalid")
+	postedData.Add("start", "01/01/2050")
+	postedData.Add("end", "invalid")
 
 	req, _ = http.NewRequest("POST", "/search-availability", strings.NewReader(postedData.Encode()))
 
@@ -431,8 +444,8 @@ func TestRepository_PostAvailability(t *testing.T) {
 	// this time, we specify a start date of 01/01/2060, which will cause
 	// our testdb repo to return an error
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2060")
-	postedData.Add("end_date", "02/01/2060")
+	postedData.Add("start", "01/01/2060")
+	postedData.Add("end", "02/01/2060")
 	req, _ = http.NewRequest("POST", "/search-availability", strings.NewReader(postedData.Encode()))
 
 	// get the context with session
@@ -464,8 +477,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// create our request body
 	postedData := url.Values{}
-	postedData.Add("start_date", "01/01/2050")
-	postedData.Add("end_date", "02/01/2050")
+	postedData.Add("start", "01/01/2050")
+	postedData.Add("end", "02/01/2050")
 	postedData.Add("room_id", "1")
 
 	// create our request
@@ -506,8 +519,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// create our request body
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2040")
-	postedData.Add("end_date", "02/01/2040")
+	postedData.Add("start", "01/01/2040")
+	postedData.Add("end", "02/01/2040")
 	postedData.Add("room_id", "1")
 
 	// create our request
@@ -580,8 +593,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// create our request body
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2060")
-	postedData.Add("end_date", "02/01/2060")
+	postedData.Add("start", "01/01/2060")
+	postedData.Add("end", "02/01/2060")
 	postedData.Add("room_id", "1")
 
 	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(postedData.Encode()))
@@ -619,8 +632,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// this time, we specify a start date in the wrong format
 	postedData = url.Values{}
-	postedData.Add("start_date", "invalid")
-	postedData.Add("end_date", "02/01/2050")
+	postedData.Add("start", "invalid")
+	postedData.Add("end", "02/01/2050")
 	postedData.Add("room_id", "1")
 
 	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(postedData.Encode()))
@@ -652,8 +665,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// this time, we specify a start date in the wrong format
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2050")
-	postedData.Add("end_date", "invalid")
+	postedData.Add("start", "01/01/2050")
+	postedData.Add("end", "invalid")
 	postedData.Add("room_id", "1")
 
 	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(postedData.Encode()))
@@ -685,8 +698,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 	*****************************************/
 	// this time, we specify a start date in the wrong format
 	postedData = url.Values{}
-	postedData.Add("start_date", "01/01/2050")
-	postedData.Add("end_date", "02/01/2050")
+	postedData.Add("start", "01/01/2050")
+	postedData.Add("end", "02/01/2050")
 	postedData.Add("room_id", "invalid")
 
 	req, _ = http.NewRequest("POST", "/search-availability-json", strings.NewReader(postedData.Encode()))

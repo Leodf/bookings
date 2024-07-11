@@ -158,6 +158,8 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	reservation.Room.RoomName = r.Form.Get("room_name")
+
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 
 	restriction := model.RoomRestrictions{
@@ -202,8 +204,8 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sd := r.Form.Get("start_date")
-	ed := r.Form.Get("end_date")
+	sd := r.Form.Get("start")
+	ed := r.Form.Get("end")
 
 	layout := "02/01/2006"
 	startDate, err := time.Parse(layout, sd)
@@ -268,8 +270,8 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sd := r.Form.Get("start_date")
-	ed := r.Form.Get("end_date")
+	sd := r.Form.Get("start")
+	ed := r.Form.Get("end")
 
 	layout := "02/01/2006"
 	startDate, err := time.Parse(layout, sd)
