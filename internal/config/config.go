@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 
+	"github.com.br/Leodf/bookings/internal/model"
 	"github.com/alexedwards/scs/v2"
 )
 
@@ -15,4 +16,5 @@ type AppConfig struct {
 	ErrorLog      *log.Logger
 	InProduction  bool
 	Session       *scs.SessionManager
+	MailChan      chan model.MailData
 }
