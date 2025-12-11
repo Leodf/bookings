@@ -37,15 +37,6 @@ func main() {
 	fmt.Println("Starting mail listener...")
 	listenForMail()
 
-	// msg := model.MailData{
-	// 	To:      "john@do.ca",
-	// 	From:    "me@here.com",
-	// 	Subject: "Hello from Bookings",
-	// 	Content: "",
-	// }
-
-	// app.MailChan <- msg
-
 	fmt.Printf("Starting application on port %s", portNumber)
 
 	srv := &http.Server{
