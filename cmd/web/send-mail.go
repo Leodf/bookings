@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
+	"strings"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/model"
@@ -32,7 +35,18 @@ func sendMsg(m model.MailData) {
 
 	email := mail.NewMSG()
 	email.SetFrom(m.From).AddTo(m.To).SetSubject(m.Subject)
-	email.SetBody(mail.TextHTML, m.Content)
+	if m.Template == "" {
+		email.SetBody(mail.TextHTML, m.Content)
+	} else {
+		path := fmt.Sprintf("./email-template/%s", m.Template)
+		data, err := os.ReadFile(path)
+		if err != nil {
+			app.ErrorLog.Println(err)
+		}
+		mailTemplate := string(data)
+		msgToSend := strings.Replace(mailTemplate, "[%body%]", m.Content, 1)
+		email.SetBody(mail.TextHTML, msgToSend)
+	}
 
 	err = email.Send(client)
 	if err != nil {
