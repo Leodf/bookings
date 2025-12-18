@@ -52,9 +52,12 @@
                     <a class="nav-link" href="/contact">Contact</a>
                 </li>
                 <li class="nav-item">
+                    {{if eq .IsAuthenticated 1}}
+                    <a class="nav-link" href="/user/logout">Logout</a>
+                    {{else}}
                     <a class="nav-link" href="/user/login">Login</a>
+                    {{end}}
                 </li>
-
             </ul>
         </div>
     </nav>
@@ -105,7 +108,7 @@
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 let forms = document.getElementsByClassName('needs-validation');
                 // Loop over them and prevent submission
-                Array.prototype.filter.call(forms, function (form) {
+                Array.prototype.forEach.call(forms, function (form) {
                     form.addEventListener('submit', function (event) {
                         if (form.checkValidity() === false) {
                             event.preventDefault();
@@ -134,15 +137,15 @@
         }
 
         { { with .Error} }
-        notify("{{.}}", "error")
+        notify("{{. | js}}", "error")
         { { end } }
 
         { { with .Flash} }
-        notify("{{.}}", "success")
+        notify("{{. | js}}", "success")
         { { end } }
 
         { { with .Warning} }
-        notify("{{.}}", "warning")
+        notify("{{. | js}}", "warning")
         { { end } }
 
     </script>

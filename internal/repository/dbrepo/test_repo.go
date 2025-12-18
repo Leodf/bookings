@@ -101,3 +101,17 @@ func (r *testDBRepo) GetRoomByID(id int) (model.Room, error) {
 	return room, nil
 
 }
+
+func (r *testDBRepo) GetUserByID(id int) (model.User, error) {
+	var u model.User
+
+	return u, nil
+}
+
+func (r *testDBRepo) UpdateUser(u model.User) error {
+	return nil
+}
+
+func (r *testDBRepo) Authenticate(email, testPassword string) (int, string, error) {
+	return 1, "", nil
+}

@@ -2,9 +2,11 @@ package dbrepo
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com.br/Leodf/bookings/internal/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // InsertReservation inserts a reservation into the database
@@ -150,4 +152,69 @@ func (r *postgresDBRepo) GetRoomByID(id int) (model.Room, error) {
 	}
 	return room, nil
 
+}
+
+// GetUserByID gets a user by ID
+func (r *postgresDBRepo) GetUserByID(id int) (model.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `select id, first_name, last_name, email, password, access_level, created_at, updated_at from users where id = $1`
+
+	row := r.DB.QueryRowContext(ctx, query)
+	var u model.User
+	err := row.Scan(
+		&u.ID,
+		&u.FirstName,
+		&u.LastName,
+		&u.Email,
+		&u.Password,
+		&u.AccessLevel,
+		&u.CreatedAt,
+		&u.UpdatedAt,
+	)
+	if err != nil {
+		return u, err
+	}
+	return u, nil
+}
+
+// UpdateUser updates user information in the database
+func (r *postgresDBRepo) UpdateUser(u model.User) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update users set first_name=$1, last_name=$2, email=$3, access_level=$4, updated_at=$5 where id=$6`
+
+	_, err := r.DB.ExecContext(ctx, query, u.FirstName, u.LastName, u.Email, u.AccessLevel, time.Now(), u.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Authenticate authenticates a user
+func (r *postgresDBRepo) Authenticate(email, testPassword string) (int, string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var id int
+	var hashedPassword string
+
+	query := `select id, password from users where email = $1`
+	row := r.DB.QueryRowContext(ctx, query, email)
+	err := row.Scan(&id, &hashedPassword)
+	if err != nil {
+		return id, "", err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
+
+	if err == bcrypt.ErrMismatchedHashAndPassword {
+		return 0, "", errors.New("incorrect password")
+	} else if err != nil {
+		return 0, "", err
+	}
+
+	return id, hashedPassword, nil
 }
