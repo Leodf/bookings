@@ -104,6 +104,8 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	res, _ := m.App.Session.Get(r.Context(), "reservation").(model.Reservation)
+
 	sd := r.Form.Get("start_date")
 	ed := r.Form.Get("end_date")
 
@@ -127,15 +129,23 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	reservation := model.Reservation{
-		FirstName: r.Form.Get("first_name"),
-		LastName:  r.Form.Get("last_name"),
-		Phone:     r.Form.Get("phone"),
-		Email:     r.Form.Get("email"),
-		StartDate: startDate,
-		EndDate:   endDate,
-		RoomID:    roomID,
-	}
+	res.FirstName = r.Form.Get("first_name")
+	res.LastName = r.Form.Get("last_name")
+	res.Phone = r.Form.Get("phone")
+	res.Email = r.Form.Get("email")
+	res.StartDate = startDate
+	res.EndDate = endDate
+	res.RoomID = roomID
+
+	// reservation := model.Reservation{
+	// 	FirstName: r.Form.Get("first_name"),
+	// 	LastName:  r.Form.Get("last_name"),
+	// 	Phone:     r.Form.Get("phone"),
+	// 	Email:     r.Form.Get("email"),
+	// 	StartDate: startDate,
+	// 	EndDate:   endDate,
+	// 	RoomID:    roomID,
+	// }
 
 	form := forms.New(r.PostForm)
 
@@ -144,30 +154,35 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	form.IsEmail("email")
 
 	if !form.Valid() {
+		m.App.Session.Put(r.Context(), "reservation", res)
 		data := make(map[string]interface{})
-		data["reservation"] = reservation
-		http.Error(w, "error message", http.StatusSeeOther)
+		data["reservation"] = res
+		stringMap := map[string]string{
+			"start_date": res.StartDate.Format("02/01/2006"),
+			"end_date":   res.EndDate.Format("02/01/2006"),
+		}
 		render.Template(w, r, "make-reservation.page.tmpl", &model.TemplateData{
-			Form: form,
-			Data: data,
+			Form:      form,
+			Data:      data,
+			StringMap: stringMap,
 		})
 		return
 	}
-	newReservationID, err := m.DB.InsertReservation(reservation)
+	newReservationID, err := m.DB.InsertReservation(res)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't insert reservation into database!")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
-	reservation.Room.RoomName = r.Form.Get("room_name")
+	res.Room.RoomName = r.Form.Get("room_name")
 
-	m.App.Session.Put(r.Context(), "reservation", reservation)
+	m.App.Session.Put(r.Context(), "reservation", res)
 
 	restriction := model.RoomRestrictions{
-		StartDate:     reservation.StartDate,
-		EndDate:       reservation.EndDate,
-		RoomID:        reservation.RoomID,
+		StartDate:     res.StartDate,
+		EndDate:       res.EndDate,
+		RoomID:        res.RoomID,
 		ReservationID: newReservationID,
 		RestrictionID: 1,
 	}
@@ -183,10 +198,10 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		<strong>Reservation Confirmation</strong><br>
 		Dear %s:, <br>
 		This is confirm your reservation from %s to %s.
-	`, reservation.FirstName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
+	`, res.FirstName, res.StartDate.Format("2006-01-02"), res.EndDate.Format("2006-01-02"))
 
 	msg := model.MailData{
-		To:       reservation.Email,
+		To:       res.Email,
 		From:     "me@here.com",
 		Subject:  "Reservation Confirmation",
 		Content:  htmlMessage,
@@ -199,7 +214,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	htmlMessage = fmt.Sprintf(`
 		<strong>Reservation Confirmation</strong><br>
 		A reservation has been made for %s from %s to %s.
-	`, reservation.Room.RoomName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
+	`, res.Room.RoomName, res.StartDate.Format("2006-01-02"), res.EndDate.Format("2006-01-02"))
 
 	msg = model.MailData{
 		To:      "me@here.com",
@@ -210,7 +225,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	m.App.MailChan <- msg
 
-	m.App.Session.Put(r.Context(), "reservation", reservation)
+	m.App.Session.Put(r.Context(), "reservation", res)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
