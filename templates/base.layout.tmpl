@@ -136,17 +136,17 @@
             })
         }
 
-        { { with .Error} }
+        "{{with .Error}}"
         notify("{{. | js}}", "error")
-        { { end } }
+        "{{end}}"
 
-        { { with .Flash} }
+        "{{with .Flash}}"
         notify("{{. | js}}", "success")
-        { { end } }
+        "{{end}}"
 
-        { { with .Warning} }
+        "{{with .Warning}}"
         notify("{{. | js}}", "warning")
-        { { end } }
+        "{{end}}"
 
     </script>
 
