@@ -43,6 +43,9 @@ func routes(_ *config.AppConfig) http.Handler {
 	mux.Route("/admin", func(mux chi.Router) {
 		mux.Use(Auth)
 		mux.Get("/dashboard", handler.Repo.AdminDashboard)
+		mux.Get("/reservations-new", handler.Repo.AdminNewReservations)
+		mux.Get("/reservations-all", handler.Repo.AdminAllReservations)
+		mux.Get("/reservations-calendar", handler.Repo.AdminReservationsCalendar)
 	})
 
 	return mux
