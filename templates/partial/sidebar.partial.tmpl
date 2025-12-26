@@ -1,0 +1,33 @@
+{{template "admin" .}}
+
+{{define "sidebar"}}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <i class="menu-icon mdi mdi-apps"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <i class="menu-icon mdi mdi-airplane-takeoff"></i>
+        <span class="menu-title">Reservations</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#">New Reservations</a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">All Reservations</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <i class="menu-icon mdi mdi-arrow-all"></i>
+        <span class="menu-title">Reservation Calendar</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{{end}}

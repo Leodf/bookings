@@ -1,0 +1,85 @@
+{{define "admin"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="/static/admin/vendors/feather/feather.css">
+  <link rel="stylesheet" href="/static/admin/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/static/admin/vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="/static/admin/vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="/static/admin/vendors/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="/static/admin/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="/static/admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/select.dataTables.min.css">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/static/admin/css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="/static/admin/images/favicon.png" />
+
+</head>
+
+<body>
+  <div class="container-scroller">
+    {{block "navbar" .}}
+
+    {{end}}
+    <div class="container-fluid page-body-wrapper">
+      {{block "sidebar" .}}
+
+      {{end}}
+      <main class="main-panel">
+        <div class="row">
+          <div class="col-md-12 grid-margin">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4>
+                  {{block "page-title" .}} {{end}}
+                </h4>
+              </div>
+              <div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          {{block "content" .}}
+
+          {{end}}
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="/static/admin/vendors/js/vendor.bundle.base.js"></script>
+  <script src="/static/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="/static/admin/vendors/chart.js/Chart.min.js"></script>
+  <script src="/static/admin/vendors/progressbar.js/progressbar.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="/static/admin/js/off-canvas.js"></script>
+  <script src="/static/admin/js/hoverable-collapse.js"></script>
+  <script src="/static/admin/js/template.js"></script>
+  <script src="/static/admin/js/settings.js"></script>
+  <script src="/static/admin/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="/static/admin/js/jquery.cookie.js" type="text/javascript"></script>
+  <script src="/static/admin/js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+</body>
+
+</html>
+
+{{end}}

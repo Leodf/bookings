@@ -93,6 +93,19 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 				return myCache, err
 			}
 		}
+
+		matches, err = filepath.Glob(fmt.Sprintf("%s/partial/*.partial.tmpl", pathToTemplates))
+		if err != nil {
+			return myCache, err
+		}
+
+		if len(matches) > 0 {
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/partial/*.partial.tmpl", pathToTemplates))
+			if err != nil {
+				return myCache, err
+			}
+		}
+
 		myCache[name] = ts
 	}
 	return myCache, nil
