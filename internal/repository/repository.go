@@ -15,4 +15,5 @@ type DatabaseRepo interface {
 	GetUserByID(id int) (model.User, error)
 	UpdateUser(u model.User) error
 	Authenticate(email, testPassword string) (int, string, error)
+	AllReservations() ([]model.Reservation, error)
 }

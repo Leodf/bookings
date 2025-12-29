@@ -12,6 +12,7 @@ import (
 	"github.com.br/Leodf/bookings/internal/config"
 	"github.com.br/Leodf/bookings/internal/driver"
 	"github.com.br/Leodf/bookings/internal/forms"
+	"github.com.br/Leodf/bookings/internal/helpers"
 	"github.com.br/Leodf/bookings/internal/model"
 	"github.com.br/Leodf/bookings/internal/render"
 	"github.com.br/Leodf/bookings/internal/repository"
@@ -537,7 +538,19 @@ func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request
 }
 
 func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, r, "admin-all-reservations.page.tmpl", &model.TemplateData{})
+	reservations, err := m.DB.AllReservations()
+	if err != nil {
+		m.App.ErrorLog.Println(err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]any)
+	data["reservations"] = reservations
+
+	render.Template(w, r, "admin-all-reservations.page.tmpl", &model.TemplateData{
+		Data: data,
+	})
 }
 
 func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
