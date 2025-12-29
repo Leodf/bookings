@@ -121,3 +121,9 @@ func (r *testDBRepo) AllReservations() ([]model.Reservation, error) {
 
 	return reservations, nil
 }
+
+func (r *testDBRepo) AllNewReservations() ([]model.Reservation, error) {
+	var reservations []model.Reservation
+
+	return reservations, nil
+}

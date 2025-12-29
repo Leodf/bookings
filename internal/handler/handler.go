@@ -529,14 +529,29 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// AdminDashboard is the admin dashboard page handler
 func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "admin-dashboard.page.tmpl", &model.TemplateData{})
 }
 
+// AdminNewReservations show all new reservations in admin page
 func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request) {
-	render.Template(w, r, "admin-new-reservations.page.tmpl", &model.TemplateData{})
+	newReservations, err := m.DB.AllNewReservations()
+	if err != nil {
+		m.App.ErrorLog.Println(err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]any)
+	data["new_reservations"] = newReservations
+
+	render.Template(w, r, "admin-new-reservations.page.tmpl", &model.TemplateData{
+		Data: data,
+	})
 }
 
+// AdminAllReservations show all reservations in admin page
 func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request) {
 	reservations, err := m.DB.AllReservations()
 	if err != nil {
