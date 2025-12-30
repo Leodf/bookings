@@ -358,3 +358,45 @@ func (r *postgresDBRepo) GetReservationByID(id int) (model.Reservation, error) {
 	}
 	return res, nil
 }
+
+// UpdateReservation updates reservation information in the database
+func (r *postgresDBRepo) UpdateReservation(rm model.Reservation) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update reservations set first_name=$1, last_name=$2, email=$3, phone=$4, updated_at=$5 where id=$6`
+
+	_, err := r.DB.ExecContext(ctx, query, rm.FirstName, rm.LastName, rm.Email, rm.Phone, time.Now(), rm.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteReservation deletes a one reservation by ID
+func (r *postgresDBRepo) DeleteReservation(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from reservations where id = $1`
+
+	_, err := r.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateProcessedForReservation updates the processed status of a reservation
+func (r *postgresDBRepo) UpdateProcessedForReservation(id, processed int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `update reservations set processed = $1 where id = $2`
+
+	_, err := r.DB.ExecContext(ctx, query, processed, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
