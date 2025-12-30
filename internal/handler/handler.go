@@ -518,7 +518,6 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "user_id", id)
 	m.App.Session.Put(r.Context(), "flash", "Logged in successfully")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
-	return
 }
 
 // Logout logs out the user
@@ -526,7 +525,6 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 	_ = m.App.Session.Destroy(r.Context())
 	_ = m.App.Session.RenewToken(r.Context())
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
-	return
 }
 
 // AdminDashboard is the admin dashboard page handler
@@ -568,6 +566,38 @@ func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request
 	})
 }
 
+// AdminShowReservation show specific reservation in admin page
+func (m *Repository) AdminShowReservation(w http.ResponseWriter, r *http.Request) {
+	urlPath := strings.Split(r.RequestURI, "/")
+	id, err := strconv.Atoi(urlPath[len(urlPath)-1])
+	if err != nil {
+		m.App.ErrorLog.Println(err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	src := urlPath[len(urlPath)-2]
+	stringMap := make(map[string]string)
+	stringMap["src"] = src
+
+	reservation, err := m.DB.GetReservationByID(id)
+	if err != nil {
+		m.App.ErrorLog.Println(err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]any)
+	data["reservation"] = reservation
+
+	render.Template(w, r, "admin-reservations-show.page.tmpl", &model.TemplateData{
+		Data:      data,
+		Form:      forms.New(nil),
+		StringMap: stringMap,
+	})
+}
+
+// AdminReservationsCalendar display the reservation calendar
 func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &model.TemplateData{})
 }
