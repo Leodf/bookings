@@ -400,3 +400,43 @@ func (r *postgresDBRepo) UpdateProcessedForReservation(id, processed int) error 
 	}
 	return nil
 }
+
+// AllRooms returns a slice of all rooms
+func (r *postgresDBRepo) AllRooms() ([]model.Room, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var rooms []model.Room
+
+	query := `
+		select id, room_name, created_at, updated_at
+		from rooms
+		order by room_name
+		`
+
+	rows, err := r.DB.QueryContext(ctx, query)
+	if err != nil {
+		return rooms, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var rm model.Room
+		err := rows.Scan(
+			&rm.ID,
+			&rm.RoomName,
+			&rm.CreatedAt,
+			&rm.UpdatedAt,
+		)
+		if err != nil {
+			return rooms, err
+		}
+		rooms = append(rooms, rm)
+	}
+
+	if err = rows.Err(); err != nil {
+		return rooms, err
+	}
+
+	return rooms, nil
+}
